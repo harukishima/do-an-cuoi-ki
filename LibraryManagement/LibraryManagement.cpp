@@ -7,10 +7,19 @@
 int main()
 {
 	LISTUSER *pHeadUser = NULL;
+	LISTREADER *pHeadReader = NULL;
+	LISTBOOK *pHeadBook = NULL;
+	LISTBORROW *pHeadBorrow = NULL;
+	LISTRETURN *pHeadReturn = NULL;
 	char *CurrentUser = new char[50];
 	int Status = 0, Type = 0;
+	puts("--Quan li thu vien--\nNhan Enter de vao chuong trinh");
 	ImportUserFile(pHeadUser);
-	bool Program = true;
+	ImportReaderList(pHeadReader);
+	ImportBookFile(pHeadBook);
+	ImportBorrowBill(pHeadBorrow);
+	ImportReturnBill(pHeadReturn);
+	int Program = 1;
 	int Command;
 	do
 	{
@@ -20,10 +29,15 @@ int main()
 		{
 			MainMenu();
 			scanf("%d",&Command);
-			MainFuntion(pHeadUser, Status, Type, CurrentUser, Command, Program);
+			MainFuntion(pHeadUser, pHeadReader, pHeadBook, pHeadBorrow, pHeadReturn, Status, Type, CurrentUser, Command, Program);
 		}
 	} while (Program);
 	UpdateUserFile(pHeadUser);
+	DestroyListUser(pHeadUser);
+	UpdateFileReader(pHeadReader);
+	UpdateBookFile(pHeadBook);
+	DestroyListBook(pHeadBook);
+	delete[]CurrentUser;
 	system("pause");
 
 }

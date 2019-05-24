@@ -39,6 +39,63 @@ struct LISTUSER
 	LISTUSER *pNext;
 };
 
+struct READER
+{
+	char ReaderID[20], FullName[50], ID[20], Email[50], Address[100]; //ReaderID = Ma doc gia, ID = CMND
+	int Gender; //1 = Man, 0 = Woman
+	DATE BirthDay, ValidFrom, GoodThru; //Ngay sinh, Ngay lap, Ngay het han
+};
+
+struct LISTREADER
+{
+	READER data;
+	LISTREADER *pNext;
+};
+
+struct BOOK
+{
+	char ISBN[20], Name[50], Author[50], Publisher[50], Genre[20], Shelf[20];
+	int YearPublish;
+	int NumberOf; //Gia sach, So quyen sach
+};
+
+struct LISTBOOK
+{
+	BOOK data;
+	LISTBOOK *pNext;
+};
+
+struct BORROWBILL
+{
+	char BillID[20]; //Ma phieu
+	char ReaderID[20];
+	DATE BorrowDate; DATE ExpectedReturn;
+	int NumberofBook;
+	char ISBN[20][20]; //So sach duoc muon toi da la 20
+};
+
+struct LISTBORROW
+{
+	BORROWBILL data;
+	LISTBORROW *pNext;
+};
+
+struct RETURNBILL
+{
+	char BillID[20]; //Ma phieu
+	char ReaderID[20];
+	DATE BorrowDate, ExpectedReturn; 
+	DATE ActualReturn;
+	int NumberofBook;
+	char ISBN[20][20];
+};
+
+struct LISTRETURN
+{
+	RETURNBILL data;
+	LISTRETURN *pNext;
+};
+
 void LogOut(int &Status, int &Type);
 LISTUSER *CreatNodeUser(USER data);
 void AddFirstUser(LISTUSER *&pHeadUser, LISTUSER *p);
@@ -49,18 +106,107 @@ void LogIn(LISTUSER *pHeadUser, int &Status, int &Type, char *CurrentUser);
 void DestroyListUser(LISTUSER *&pHeadUser);
 void PrintUser(USER data);
 void PrintListUser(LISTUSER *pHeadUser);
-LISTUSER *FindUser(LISTUSER *pHeadUser, char CurrentUser[]);
+LISTUSER *FindUser(LISTUSER *pHeadUser, char *CurrentUser);
 void ChangePassword(LISTUSER *pHeadUser, char *NewPassword, char *CurrentUser);
 void UpdateUserFile(LISTUSER *pHeadUser);
 void UpdatePreference(LISTUSER *pHeadUser, char *CurrentUser);
 void AddUser(LISTUSER *&pHeadUser);
+void ChangeUserType(LISTUSER *&pHeadUser);
+void WriteUser(FILE *stream, USER data);
+void AddtoEOFUser(USER data);
 
 void MainMenu();
 void AdminAccountMenu();
 void AdminAccountFunction(LISTUSER *&pHeadUser, int Command, char *CurrentUser);
-void MainFuntion(LISTUSER *&pHeadUser, int &Status, int &Type, char *CurrentUser, int Command, bool &Program);
+void AccountMenu();
+void AccountFunction(LISTUSER *&pHeadUser, int Command, char *CurrentUser);
+void ReaderConfigMenuStaff();
+void ReaderConfigStaff(LISTREADER *&pHeadReader, int Command, LISTBORROW* pHeadBorrow, LISTRETURN* pHeadReturn, LISTBOOK* pHeadBook);
+void MainFuntion(LISTUSER *&pHeadUser, LISTREADER *&pHeadReader, LISTBOOK *&pHeadBook, LISTBORROW *&pHeadBorrow, LISTRETURN *&pHeadReturn, int &Status, int &Type, char *CurrentUser, int Command, int &Program);
+void ReaderConfigMenuAdmin();
+void ReaderConfigAdmin(LISTREADER *&pHeadReader, int Command, LISTBORROW *pHeadBorrow, LISTRETURN *pHeadReturn, LISTBOOK *pHeadBook);
+void BookConfigMenuAdmin();
+void BookConfigAdmin(LISTBOOK *&pHeadBook, int Command);
+void BookConfigMenuStaff();
+void BookConfigStaff(LISTBOOK *&pHeadBook, int Command);
+void StatisMenuAdmin();
+void StatisFunctionAdmin(LISTREADER *pHeadReader, LISTBOOK *pHeadBook, LISTBORROW *pHeadBorrow, LISTRETURN *pHeadReturn, int Command);
 
 
+LISTREADER *CreateNodeReader(READER data);
+void AddFirstReader(LISTREADER *&pHeadReader, LISTREADER *p);
+void AddLastReader(LISTREADER *&pHeadReader, LISTREADER *p);
+DATE DateInput();
+void ImportReaderList(LISTREADER *&pHeadReader);
+void UpdateReader(FILE *stream, READER tmp);
+void UpdateFileReader(LISTREADER *pHeadReader);
+void PrintReaderNODE(LISTREADER *p);
+void PrintReaderList(LISTREADER *pHeadReader);
+LISTREADER *FindReaderReaderID(LISTREADER *pHeadReader, char *ReaderID);
+void UpdateReaderPreference(LISTREADER *pHeadReader, char *ReaderID);
+void DeleteFirstReader(LISTREADER *&pHeadReader);
+void DeleteReaderNODE(LISTREADER *&pHeadReader, char *ReaderID);
+LISTREADER *FindReaderBaseonID(LISTREADER *pHeadReader, char *ID);
+void AddReader(LISTREADER *&pHeadReader);
+void AddtoEOFReader(READER data);
+void DateOutput(DATE day);
+LISTREADER *FindReaderBaseOnName(LISTREADER *pHeadReader, char *FullName);
+void FindBookBaseOnReaderName(char *FullName, LISTREADER *pHeadReader, LISTBORROW *pHeadBorrow, LISTBOOK *pHeadBook);
+void FindBookBorrowing(char *FullName, LISTREADER *pHeadReader, LISTBORROW *pHeadBorrow, LISTRETURN *pHeadReturn, LISTBOOK *pHeadBook);
 
+
+LISTBOOK *CreateNodeBook(BOOK data);
+void AddFirstBook(LISTBOOK *&pHeadBook, LISTBOOK *p);
+void AddLastBook(LISTBOOK *&pHeadBook, LISTBOOK *p);
+void ImportBookFile(LISTBOOK *&pHeadBook);
+void DestroyListBook(LISTBOOK *&pHeadBook);
+void PrintBook(BOOK data);
+void PrintListBook(LISTBOOK *pHeadBook);
+void UpdateBookFile(LISTBOOK *pHeadBook);
+void AddBook(LISTBOOK *&pHeadBook);
+LISTBOOK *FindBookISBN(LISTBOOK *pHeadBook, char *ISBN);
+void UpdateBookInformation(LISTBOOK *pHeadBook, char *ISBN);
+void DeleteFirstBook(LISTBOOK *&pHeadBook);
+void DeleteBookNODE(LISTBOOK *&pHeadBook, char *ISBN);
+LISTBOOK *FindBookBaseonName(LISTBOOK *pHeadBook, char *Name);
+void UpdateBook(FILE *stream, LISTBOOK *p);
+void AddtoEOFBook(LISTBOOK *&p);
+
+
+LISTBORROW *CreateNodeBorrow(BORROWBILL data);
+void AddFirstBorrow(LISTBORROW *&pHeadBorrow, LISTBORROW *p);
+void AddLastBorrow(LISTBORROW *&pHeadBorrow, LISTBORROW *p);
+void ImportBorrowBill(LISTBORROW *&pHeadBorrow);
+void BorrowBillInput(BORROWBILL &data);
+void WriteBorrowBill(FILE *stream, BORROWBILL data);
+void AddtoEOFBorrow(BORROWBILL data);
+void CreateBorrowBill(LISTBORROW *pHeadBorrow, LISTBOOK *pHeadBook, LISTREADER *pHeadReader);
+int is_emp(char *file_name);
+int is_exist(char *file_name);
+LISTRETURN *CreateNodeReturn(RETURNBILL data);
+void AddFirstReturn(LISTRETURN *&pHeadReturn, LISTRETURN *p);
+void AddLastReturn(LISTRETURN *&pHeadReturn, LISTRETURN *p);
+void ImportReturnBill(LISTRETURN *&pHeadReturn);
+void WriteReturnBill(FILE *stream, RETURNBILL data);
+LISTBORROW *FindBorrowBill(LISTBORROW *pHeadBorrow, char *BillID);
+LISTRETURN *FindReturnBill(LISTRETURN *pHeadReturn, char *BillID);
+void PrintBorrowBill(BORROWBILL data);
+void CreateReturnBill(LISTRETURN *&pHeadReturn, LISTBORROW *pHeadBorrow, LISTBOOK *pHeadBook);
+void AddtoEOFReturn(RETURNBILL data);
+char *RemoveLastChar(char *string);
+int IdentifyEndTok(char *string);
+int IdentifyEndLineTok(char *string);
+int DateCal(DATE date);
+int NumberOfDays(DATE start, DATE end);
+LISTBORROW *FindBorrowBillBaseOnReaderID(LISTBORROW *pHeadBorrow, char *ReaderID);
+
+
+int CountBook(LISTBOOK *pHeadBook);
+int CountBookBaseOnGenre(LISTBOOK *pHeadBook, char *genre);
+int CountReader(LISTREADER *pHeadReader);
+int CountReaderBaseOnGender(LISTREADER *pHeadReader, int gender);
+int CountBookInBorrowList(LISTBORROW *pHeadBorrow);
+int CountBookInReturnList(LISTRETURN *pHeadReturn);
+int CountBookBeingBorrowed(LISTBORROW *pHeadBorrow, LISTRETURN *pHeadReturn);
 
 #endif //PCH_H

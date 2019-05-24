@@ -5,6 +5,7 @@ void LogOut(int &Status, int &Type)
 {
 	Status = Type = 0;
 	printf("Dang xuat thanh cong\n");
+	_flushall(); std::cin.ignore();
 }
 
 LISTUSER *CreatNodeUser(USER data)
@@ -170,9 +171,9 @@ LISTUSER *FindUser(LISTUSER *pHeadUser, char *CurrentUser)
 		{
 			return p;
 		}
-		else
-			p = p->pNext;
+		p = p->pNext;
 	}
+	return NULL;
 }
 
 void UpdateUserFile(LISTUSER *pHeadUser)
@@ -182,7 +183,7 @@ void UpdateUserFile(LISTUSER *pHeadUser)
 	LISTUSER *p = pHeadUser;
 	while (p != NULL)
 	{
-		fprintf(stream, "%s,%s,%s,%s,%s,%d,%d,%d,%d,%d,%d", p->data.Username, p->data.Pass, p->data.FullName, p->data.ID, p->data.Address, p->data.Gender, p->data.Status, p->data.Type, p->data.BirthDay.Date, p->data.BirthDay.Month, p->data.BirthDay.Year);
+		WriteUser(stream, p->data);
 		if (p->pNext != NULL) fprintf(stream, "\n");
 		p = p->pNext;
 	}
@@ -191,7 +192,9 @@ void UpdateUserFile(LISTUSER *pHeadUser)
 
 void UpdatePreference(LISTUSER *pHeadUser, char *CurrentUser)
 {
-	LISTUSER *p = FindUser(pHeadUser, CurrentUser);
+	LISTUSER *p = NULL;
+	p = FindUser(pHeadUser, CurrentUser);
+	if (p == NULL) { printf("Khong tim thay nguoi dung\n"); return; }
 	puts("Chon thong tin can thay doi: \n");
 	puts("1. Ho ten\n");
 	puts("2. Ngay sinh\n");
@@ -262,6 +265,7 @@ void AddUser(LISTUSER *&pHeadUser) //Tao nguoi dung moi
 	LISTUSER *p = CreatNodeUser(NewUser);
 	AddLastUser(pHeadUser, p);
 	printf("Tao nguoi dung thanh cong\n");
+	AddtoEOFUser(p->data);
 }
 
 void ChangeUserType(LISTUSER *&pHeadUser) //Phan quyen nguoi dung (admin only)
@@ -276,73 +280,29 @@ void ChangeUserType(LISTUSER *&pHeadUser) //Phan quyen nguoi dung (admin only)
 	printf("Phan quyen thanh cong\n");
 }
 
-void MainMenu()
+
+void WriteUser(FILE *stream, USER data)
 {
-	printf("1. Quan li tai khoan\n");
-	printf("2. Quan li doc gia\n");
-	printf("3. Quan li sach\n");
-	printf("4. Lap phieu muon sach\n");
-	printf("5. Lap phieu tra sach\n");
-	printf("6. Thong ke\n");
-	printf("7. Dang xuat\n");
-	printf("Chon phim khac de thoat\n");
-	printf("Nhap: ");
+	fprintf(stream, "%s,%s,%s,%s,%s,%d,%d,%d,%d,%d,%d", data.Username, data.Pass, data.FullName, data.ID, data.Address, data.Gender, data.Status, data.Type, data.BirthDay.Date, data.BirthDay.Month, data.BirthDay.Year);
 }
 
-void AdminAccountMenu()
+void AddtoEOFUser(USER data)
 {
-	printf("1. Doi mat khau\n");
-	printf("2. Cap nhat thong tin ca nhan\n");
-	printf("3. Tao nguoi dung\n");
-	printf("4. Phan quyen nguoi dung\n");
-	printf("5. Chon phim khac de tro ve\n");
-	printf("Nhap: ");
-}
-
-void AdminAccountFunction(LISTUSER *&pHeadUser, int Command, char *CurrentUser)
-{
-	char *NewPassword = new char[20];
-	switch (Command)
+	char *filename = new char[50]; strcpy(filename, "user.txt");
+	if (is_emp(filename) || !is_exist(filename))
 	{
-	case 1:
-		printf("Nhap mat khau moi: ");
-		scanf("%s",NewPassword);
-		ChangePassword(pHeadUser, NewPassword, CurrentUser);
-		break;
-	case 2:
-		UpdatePreference(pHeadUser, CurrentUser);
-		break;
-	case 3:
-		AddUser(pHeadUser);
-		break;
-	case 4:
-		ChangeUserType(pHeadUser);
-		break;
-	default:
-		break;
+		FILE *stream = fopen(filename, "a");
+		if (stream == NULL) return;
+		WriteUser(stream, data);
+		fclose(stream);
 	}
-}
-
-void MainFuntion(LISTUSER *&pHeadUser, int &Status, int &Type, char *CurrentUser, int Command, bool &Program)
-{
-	switch (Command)
+	else
 	{
-	case 1:
-		if (Type == 2)
-		{
-			AdminAccountMenu();
-			scanf("%d",&Command);
-			AdminAccountFunction(pHeadUser, Command, CurrentUser);
-		}
-		break;
-	case 2:
-		
-	case 7:
-		LogOut(Status, Type);
-		break;
-	default:
-		Program = 0;
-		break;
+		FILE *stream = fopen(filename, "a");
+		if (stream == NULL) return;
+		fprintf(stream, "\n");
+		WriteUser(stream, data);
+		fclose(stream);
 	}
+	delete[]filename;
 }
-
