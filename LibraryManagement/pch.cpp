@@ -7,6 +7,7 @@
 
 void MainMenu()
 {
+	printf("MAIN MENU\n");
 	printf("1. Quan li tai khoan\n");
 	printf("2. Quan li doc gia\n");
 	printf("3. Quan li sach\n");
@@ -20,6 +21,7 @@ void MainMenu()
 
 void AdminAccountMenu()
 {
+	printf("QUAN LI TAI KHOAN\n");
 	printf("1. Doi mat khau\n");
 	printf("2. Cap nhat thong tin ca nhan\n");
 	printf("3. Tao nguoi dung\n");
@@ -54,6 +56,7 @@ void AdminAccountFunction(LISTUSER *&pHeadUser, int Command, char *CurrentUser)
 
 void AccountMenu()
 {
+	printf("QUAN LI TAI KHOAN\n");
 	printf("1. Doi mat khau\n");
 	printf("2. Cap nhat thong tin ca nhan\n");
 	printf("Chon phim khac de tro ve\n");
@@ -87,12 +90,14 @@ void MainFuntion(LISTUSER *&pHeadUser, LISTREADER *&pHeadReader, LISTBOOK *&pHea
 		{
 			AdminAccountMenu();
 			scanf("%d", &Command);
+			system("cls");
 			AdminAccountFunction(pHeadUser, Command, CurrentUser);
 		}
 		else
 		{
 			AccountMenu();
 			scanf("%d", &Command);
+			system("cls");
 			AccountFunction(pHeadUser, Command, CurrentUser);
 		}
 		break;
@@ -101,12 +106,14 @@ void MainFuntion(LISTUSER *&pHeadUser, LISTREADER *&pHeadReader, LISTBOOK *&pHea
 		{
 			ReaderConfigMenuAdmin();
 			scanf("%d", &Command);
+			system("cls");
 			ReaderConfigAdmin(pHeadReader, Command, pHeadBorrow, pHeadReturn, pHeadBook);
 		}
 		else
 		{
 			ReaderConfigMenuStaff();
 			scanf("%d", &Command);
+			system("cls");
 			ReaderConfigStaff(pHeadReader, Command, pHeadBorrow, pHeadReturn, pHeadBook);
 		}
 		break;
@@ -115,12 +122,14 @@ void MainFuntion(LISTUSER *&pHeadUser, LISTREADER *&pHeadReader, LISTBOOK *&pHea
 		{
 			BookConfigMenuAdmin();
 			scanf("%d", &Command);
+			system("cls");
 			BookConfigAdmin(pHeadBook, Command);
 		}
 		else
 		{
 			BookConfigMenuStaff();
 			scanf("%d", &Command);
+			system("cls");
 			BookConfigStaff(pHeadBook, Command);
 		}
 		break;
@@ -135,7 +144,15 @@ void MainFuntion(LISTUSER *&pHeadUser, LISTREADER *&pHeadReader, LISTBOOK *&pHea
 		{
 			StatisMenuAdmin();
 			scanf("%d", &Command);
+			system("cls");
 			StatisFunctionAdmin(pHeadReader, pHeadBook, pHeadBorrow, pHeadReturn, Command);
+		}
+		else
+		{
+			StatisMenuStaff();
+			scanf("%d", &Command);
+			system("cls");
+			StatisFunctionStaff(pHeadReader, pHeadBorrow, pHeadReturn, Command);
 		}
 		break;
 	case 7:
@@ -143,6 +160,7 @@ void MainFuntion(LISTUSER *&pHeadUser, LISTREADER *&pHeadReader, LISTBOOK *&pHea
 		break;
 	default:
 		Program = 0;
+		printf("Da thoat thanh cong\n");
 		break;
 	}
 }
@@ -191,6 +209,7 @@ void ReaderConfigAdmin(LISTREADER *&pHeadReader, int Command, LISTBORROW *pHeadB
 
 void ReaderConfigMenuAdmin()
 {
+	printf("QUAN LI DOC GIA\n");
 	printf("1. Xem danh sach doc gia\n");
 	printf("2. Them doc gia\n");
 	printf("3. Chinh sua thong tin doc gia\n");
@@ -203,6 +222,7 @@ void ReaderConfigMenuAdmin()
 
 void ReaderConfigMenuStaff()
 {
+	printf("QUAN LI DOC GIA\n");
 	printf("1. Xem danh sach doc gia\n");
 	printf("2. Them doc gia\n");
 	printf("3. Chinh sua thong tin doc gia\n");
@@ -249,6 +269,7 @@ void ReaderConfigStaff(LISTREADER *&pHeadReader, int Command, LISTBORROW* pHeadB
 
 void BookConfigMenuAdmin()
 {
+	printf("QUAN LI SACH\n");
 	printf("1. Xem danh sach cac sach\n");
 	printf("2. Them sach\n");
 	printf("3. Chinh sua thong tin sach\n");
@@ -260,6 +281,7 @@ void BookConfigMenuAdmin()
 
 void BookConfigMenuStaff()
 {
+	printf("QUAN LI SACH\n");
 	printf("1. Tim kiem sach theo ISBN\n");
 	printf("2. Tim kiem sach theo ten sach\n");
 	printf("Nhap so khac de thoat\n");
@@ -329,6 +351,7 @@ void BookConfigStaff(LISTBOOK *&pHeadBook, int Command)
 
 void StatisMenuAdmin()
 {
+	printf("THONG KE\n");
 	printf("1. Thong ke so luong sach trong thu vien\n");
 	printf("2. Thong ke so luong sach theo the loai\n");
 	printf("3. Thong ke so luong doc gia\n");
@@ -375,6 +398,40 @@ void StatisFunctionAdmin(LISTREADER *pHeadReader, LISTBOOK *pHeadBook, LISTBORRO
 		OverdueReaderNotReturnYet(pHeadBorrow, pHeadReturn, pHeadReader, true);
 		break;
 	case 7:
+		OverdueReaderNotReturnYet(pHeadBorrow, pHeadReturn, pHeadReader, false);
+		break;
+	default:
+		break;
+	}
+	printf("\n");
+	delete[]tmpstring;
+}
+
+void StatisMenuStaff()
+{
+	printf("THONG KE\n");
+	printf("1. Thong ke so luong sach dang duoc muon\n");
+	printf("2. Thong ke danh sach doc gia bi tre han chua tra sach\n");
+	printf("3. Thong ke danh sach doc gia bi tre han da tra sach\n");
+	printf("Chon so khac de tro ve\n");
+	printf("Nhap lenh: ");
+}
+
+void StatisFunctionStaff(LISTREADER *pHeadReader, LISTBORROW *pHeadBorrow, LISTRETURN *pHeadReturn, int Command)
+{
+	_flushall(); std::cin.ignore();
+	int tmp;
+	char *tmpstring = new char[20];
+	switch (Command)
+	{
+	case 1:
+		tmp = CountBookBeingBorrowed(pHeadBorrow, pHeadReturn);
+		printf("So luong sach dang duoc muon: %d", tmp);
+		break;
+	case 2:
+		OverdueReaderNotReturnYet(pHeadBorrow, pHeadReturn, pHeadReader, true);
+		break;
+	case 3:
 		OverdueReaderNotReturnYet(pHeadBorrow, pHeadReturn, pHeadReader, false);
 		break;
 	default:

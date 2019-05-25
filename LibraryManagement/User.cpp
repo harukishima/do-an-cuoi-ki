@@ -115,6 +115,8 @@ void LogInQ(LISTUSER *pHeadUser, int &Status, int &Type, char id[], char pass[])
 void LogIn(LISTUSER *pHeadUser, int &Status, int &Type, char *CurrentUser)
 {
 	char id[50], pass[50];
+	system("cls");
+	printf("DANG NHAP\n");
 	puts("Ten dang nhap: \n");
 	gets_s(id, 50);
 	puts("Mat khau: \n");

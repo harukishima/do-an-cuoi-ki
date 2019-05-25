@@ -29,8 +29,11 @@ int main()
 		{
 			MainMenu();
 			scanf("%d",&Command);
+			system("cls");
 			MainFuntion(pHeadUser, pHeadReader, pHeadBook, pHeadBorrow, pHeadReturn, Status, Type, CurrentUser, Command, Program);
 		}
+		system("pause");
+		system("cls");
 	} while (Program);
 	UpdateUserFile(pHeadUser);
 	DestroyListUser(pHeadUser);
@@ -38,8 +41,6 @@ int main()
 	UpdateBookFile(pHeadBook);
 	DestroyListBook(pHeadBook);
 	delete[]CurrentUser;
-	system("pause");
-
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu

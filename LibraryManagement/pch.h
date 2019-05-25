@@ -133,7 +133,8 @@ void BookConfigMenuStaff();
 void BookConfigStaff(LISTBOOK *&pHeadBook, int Command);
 void StatisMenuAdmin();
 void StatisFunctionAdmin(LISTREADER *pHeadReader, LISTBOOK *pHeadBook, LISTBORROW *pHeadBorrow, LISTRETURN *pHeadReturn, int Command);
-
+void StatisMenuStaff();
+void StatisFunctionStaff(LISTREADER *pHeadReader, LISTBORROW *pHeadBorrow, LISTRETURN *pHeadReturn, int Command);
 
 LISTREADER *CreateNodeReader(READER data);
 void AddFirstReader(LISTREADER *&pHeadReader, LISTREADER *p);
