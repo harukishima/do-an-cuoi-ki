@@ -104,6 +104,11 @@ void BorrowBillInput(BORROWBILL &data)
 	printf("Ma phieu: "); scanf("%s", &data.BillID);
 	printf("Ma doc gia: "); scanf("%s", &data.ReaderID);
 	printf("So sach muon: "); scanf("%d", &data.NumberofBook);
+	if (data.NumberofBook > 20)
+	{
+		printf("So sach khong duoc vuot qua 20\n");
+		return;
+	}
 	printf("ISBN tung sach\n");
 	for (int i = 0; i < data.NumberofBook; i++)
 	{
@@ -147,6 +152,7 @@ void AddtoEOFBorrow(BORROWBILL data)
 void CreateBorrowBill(LISTBORROW *pHeadBorrow, LISTBOOK *pHeadBook, LISTREADER *pHeadReader)
 {
 	BORROWBILL tmp; BorrowBillInput(tmp);
+	if (tmp.NumberofBook > 20) return;
 	if (NumberOfDays(tmp.BorrowDate, tmp.ExpectedReturn) > 7)
 	{
 		printf("Khong duoc muon qua 7 ngay\n");

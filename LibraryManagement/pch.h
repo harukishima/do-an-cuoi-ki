@@ -58,7 +58,7 @@ struct BOOK
 {
 	char ISBN[20], Name[50], Author[50], Publisher[50], Genre[20], Shelf[20];
 	int YearPublish;
-	int NumberOf; //Gia sach, So quyen sach
+	int NumberOf; //So quyen sach
 };
 
 struct LISTBOOK
