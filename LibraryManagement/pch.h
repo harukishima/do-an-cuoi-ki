@@ -15,7 +15,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <iostream>
-
+#include <time.h>
 
 
 
@@ -23,6 +23,8 @@ struct DATE
 {
 	int Date, Month, Year;
 };
+
+
 
 struct USER
 {
@@ -208,5 +210,8 @@ int CountReaderBaseOnGender(LISTREADER *pHeadReader, int gender);
 int CountBookInBorrowList(LISTBORROW *pHeadBorrow);
 int CountBookInReturnList(LISTRETURN *pHeadReturn);
 int CountBookBeingBorrowed(LISTBORROW *pHeadBorrow, LISTRETURN *pHeadReturn);
+LISTREADER *FindOverdueReaderNotReturn(LISTBORROW *BorrowBill, LISTREADER *pHeadReader, LISTRETURN *pHeadReturn);
+void OverdueReaderNotReturnYet(LISTBORROW *pHeadBorrow, LISTRETURN *pHeadReturn, LISTREADER *pHeadReader, bool DK);
+LISTREADER *FindOverdueReaderReturned(LISTBORROW *BorrowBill, LISTREADER *pHeadReader, LISTRETURN *pHeadReturn);
 
 #endif //PCH_H

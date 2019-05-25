@@ -1,3 +1,5 @@
 9781626927681,Arifureta 1,Ryo Shirakome,Seven Seas,Fantasy,001,2018,1
 123,Mo,aaa,aaa,Sky,002,2019,2
 128947,123,fa,wsd,cs,as,2000,1
+999,AAA,GIA,NXB,Sci-fi,003,2018,2
+888,BBB,AS,NXB,8,002,2019,1

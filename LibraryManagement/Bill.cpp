@@ -318,12 +318,13 @@ void WriteReturnBill(FILE *stream, RETURNBILL data)
 LISTBORROW *FindBorrowBill(LISTBORROW *pHeadBorrow, char *BillID)
 {
 	LISTBORROW *p = pHeadBorrow;
-	while (p->pNext != NULL)
+	if (p == NULL) return NULL;
+	do
 	{
 		if (strcmp(p->data.BillID, BillID) == 0)
 			return p;
 		p = p->pNext;
-	}
+	} while (p->pNext != NULL);
 	return NULL;
 }
 
@@ -444,11 +445,11 @@ LISTBORROW *FindBorrowBillBaseOnReaderID(LISTBORROW *pHeadBorrow, char *ReaderID
 LISTRETURN *FindReturnBill(LISTRETURN *pHeadReturn, char *BillID)
 {
 	LISTRETURN *p = pHeadReturn;
-	while (p->pNext != NULL)
+	if (p == NULL) return NULL;
 	{
 		if (strcmp(p->data.BillID, BillID) == 0)
 			return p;
 		p = p->pNext;
-	}
+	}while (p->pNext != NULL);
 	return NULL;
 }

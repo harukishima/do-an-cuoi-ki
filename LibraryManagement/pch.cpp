@@ -334,7 +334,8 @@ void StatisMenuAdmin()
 	printf("3. Thong ke so luong doc gia\n");
 	printf("4. Thong ke so luong doc gia theo gioi tinh\n");
 	printf("5. Thong ke so luong sach dang duoc muon\n");
-	printf("6. Thong ke danh sach doc gia bi tre han\n ");
+	printf("6. Thong ke danh sach doc gia bi tre han chua tra sach\n");
+	printf("7. Thong ke danh sach doc gia bi tre han da tra sach\n");
 	printf("Chon so khac de tro ve\n");
 	printf("Nhap lenh: ");
 }
@@ -369,6 +370,12 @@ void StatisFunctionAdmin(LISTREADER *pHeadReader, LISTBOOK *pHeadBook, LISTBORRO
 	case 5:
 		tmp = CountBookBeingBorrowed(pHeadBorrow, pHeadReturn);
 		printf("So luong sach dang duoc muon: %d", tmp);
+		break;
+	case 6:
+		OverdueReaderNotReturnYet(pHeadBorrow, pHeadReturn, pHeadReader, true);
+		break;
+	case 7:
+		OverdueReaderNotReturnYet(pHeadBorrow, pHeadReturn, pHeadReader, false);
 		break;
 	default:
 		break;
