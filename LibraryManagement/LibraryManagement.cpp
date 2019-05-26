@@ -24,7 +24,25 @@ int main()
 	do
 	{
 		if (!Status)
-			LogIn(pHeadUser, Status, Type, CurrentUser);
+		{
+			system("cls");
+			printf("1. Dang nhap\n");
+			printf("Nhap so khac de thoat\n");
+			printf("Nhap lenh: ");
+			scanf("%d", &Command);
+			system("cls");
+			switch (Command)
+			{
+			case 1:
+				std::cin.ignore();
+				LogIn(pHeadUser, Status, Type, CurrentUser);
+				break;
+			default:
+				Program = 0;
+				printf("Thoat chuong trinh\n");
+				break;
+			}
+		}
 		else
 		{
 			MainMenu();

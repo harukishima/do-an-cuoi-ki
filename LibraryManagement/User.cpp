@@ -273,7 +273,7 @@ void AddUser(LISTUSER *&pHeadUser) //Tao nguoi dung moi
 void ChangeUserType(LISTUSER *&pHeadUser) //Phan quyen nguoi dung (admin only)
 {
 	char *username = new char[50];
-	_flushall();
+	_flushall(); std::cin.ignore();
 	printf("Nhap ten dang nhap cua nguoi dung can thay doi: ");
 	gets_s(username,50);
 	LISTUSER *p = FindUser(pHeadUser, username);
